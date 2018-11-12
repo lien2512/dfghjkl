@@ -15,13 +15,29 @@ public class test {
             File file = path;
             BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
             String line ;
-
+            String lin ;
             while((line = in.readLine()) != null)
             {
-
-                if((line.contains("public static") ||(line.contains("//")&&line.contains("public static")) ||(line.contains("/*") &&line.contains("public static")))&& !line.contains(";"))
+                String st = line.trim();
+                if((st.startsWith("public static")) ||(st.startsWith("static")) && !line.contains(";"))
                 {
-                    list.add(line);
+                    String s  =line;
+                    int count1 = 0;
+                    int count2 = 0;
+                    while(count1 != count2 && count1!= 0)
+                    {
+                        if(line.contains("{"))
+                        {
+                            count1 ++;
+                        }
+                        else if(line.contains("}"))
+                        {
+                            count2 ++;
+                        }
+                        s= s+ line +"\n";
+                    }
+
+                    list.add(line.substring(0,1));
                 }
                 //line = in.readLine();
             }
@@ -44,8 +60,8 @@ public class test {
         String s ="";
         int count1 = 0;
         int count2 = 0;
-        int n = name.indexOf(",");
-        String st = name.substring(0,n);
+        int n = name.indexOf("(");
+        String st = name.substring(0,n+2 );
         int i = 0;
         int j  = 0;
         try {
@@ -74,6 +90,7 @@ public class test {
                     }
                     if(count1 == count2 && count1 != 0)
                     {
+
                         break;
                     }
 
@@ -91,10 +108,14 @@ public class test {
     }
     public static void main(String[] args) {
         test so = new test();
+        System.out.println("3");
         File test = new File("C:\\Lab9\\src\\Utils.java");
         in(so.getAllFunctions(test));
         System.out.println();
+        if(so.findFunctionByName("findFileByName(String,String)").length() != 0)
         System.out.println(so.findFunctionByName("findFileByName(String,String)"));
+        else
+            System.out.println("không tìm thấy hàm");
 
     }
 }
